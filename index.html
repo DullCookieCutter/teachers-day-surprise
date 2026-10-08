@@ -73,8 +73,10 @@
     /* Preserved Custom Image Size */
     .outer-img {
       position: absolute;
-      width: 20%;
-      height: 30%;
+      width: 360px;
+      height: 270px;
+      max-width: 22vw;
+      max-height: 20vh;
       object-fit: cover;
       border-radius: 12px;
       border: 4px solid #ffffff;
@@ -82,6 +84,26 @@
       animation: outerFadeIn 0.5s ease-out forwards;
       cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Tablet adjustments (screens under 768px wide) */
+    @media (max-width: 768px) {
+      .outer-img {
+        width: 120px;
+        height: 90px;
+        border-width: 3px;
+        border-radius: 8px;
+      }
+    }
+
+    /* Mobile phone adjustments (screens under 480px wide) */
+    @media (max-width: 480px) {
+      .outer-img {
+        width: 85px;
+        height: 65px;
+        border-width: 2px;
+        border-radius: 6px;
+      }
     }
 
     .outer-img:hover {
@@ -449,14 +471,14 @@
       ],
       // Slide 4 Photos ("From Your IT Students" Outer Ring Photos)
       [
-        "3.png",
-        "6.png",
-        "7.png",
-        "9 (2).png",
-        "9.png",
-        "10.png",
-        "11.png",
-        "12.png",
+        "3.jpg",
+        "6.jpg",
+        "7.jpg",
+        "9 (2).jpg",
+        "9.jpg",
+        "10.jpg",
+        "11.jpg",
+        "12.jpg",
         "747752835_1928505014404883_4867300663059431409_n.jpg"
       ]
     ];
