@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Teacher's Day! Special Surprise</title>
+  <style>
+    :root {
+      --bg-navy: #0b1d3a;
+      --card-blue: #162a4d;
+      --accent-blue: #3b82f6;
+      --text-light: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0b1d3a 0%, #1e3a8a 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: var(--text-light);
+      position: relative;
+    }
+
+    /* Floating Background Emojis */
+    .floating-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      bottom: -80px;
+      font-size: 1.8rem;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.5;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Outer Photo Ring Container */
+    .outer-photo-ring {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: auto;
+      z-index: 5;
+    }
+
+    /* Preserved Custom Image Size */
+    .outer-img {
+      position: absolute;
+      width: 20%;
+      height: 30%;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 4px solid #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      animation: outerFadeIn 0.5s ease-out forwards;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .outer-img:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      z-index: 10;
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.6);
+    }
+
+    @keyframes outerFadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* 9 Perimeter Positions around Center Card */
+    .slot-0 { top: 5%;  left: 20%; transform: rotate(-5deg); }   
+    .slot-1 { top: 3%;  left: 45%; transform: rotate(3deg); }    
+    .slot-2 { top: 5%;  right: 20%; transform: rotate(-4deg); }  
+
+    .slot-3 { top: 35%; left: 8%; transform: rotate(4deg); }    
+    .slot-4 { top: 35%; right: 8%; transform: rotate(-6deg); }   
+
+    .slot-5 { bottom: 6%; left: 12%; transform: rotate(-3deg); } 
+    .slot-6 { bottom: 4%; left: 33%; transform: rotate(5deg); }  
+    .slot-7 { bottom: 4%; right: 33%; transform: rotate(-4deg); }
+    .slot-8 { bottom: 6%; right: 12%; transform: rotate(3deg); } 
+
+    /* Invisible Bounding Box covering card & collage area */
+    .no-boundary-box {
+      position: absolute;
+      width: 90vw;
+      height: 90vh;
+      top: 5vh;
+      left: 5vw;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* Main Card Container */
+    .container {
+      position: relative;
+      z-index: 20;
+      width: 90%;
+      max-width: 460px;
+      min-height: 320px;
+      background: rgba(22, 42, 77, 0.95);
+      backdrop-filter: blur(14px);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10deg); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      margin-bottom: 1.2rem;
+    }
+
+    .slide-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn:hover {
+      background: #2563eb;
+      transform: translateY(-2deg);
+    }
+
+    /* Interactive Area inside card */
+    .interactive-area {
+      position: relative;
+      width: 100%;
+      height: 80px;
+      margin-top: 1rem;
+    }
+
+    /* YES Button locked firmly on the left */
+    .btn-yes {
+      background: #22c55e;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      position: absolute;
+      left: 28%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 25;
+    }
+
+    .btn-yes:hover {
+      background: #16a34a;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    /* Initial position for Runaway NO Button */
+    .btn-no {
+      background: #ef4444;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      position: absolute;
+      left: 72%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: auto;
+      transition: top 0.15s ease-out, left 0.15s ease-out;
+      z-index: 40;
+    }
+
+    /* Final Surprise Link Button & Subtext Hint */
+    .rickroll-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      background: linear-gradient(45deg, #f43f5e, #8b5cf6);
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 20px rgba(244, 63, 94, 0.4);
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .surprise-hint {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-top: 0.8rem;
+      font-style: italic;
+    }
+
+    /* Image Lightbox Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: modalFadeIn 0.3s ease forwards;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 85vw;
+      max-height: 85vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 5px solid #ffffff;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 45px;
+      height: 45px;
+      background: #ef4444;
+      color: white;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 1010;
+    }
+
+    .close-btn:hover {
+      background: #dc2626;
+      transform: scale(1.1) rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Emojis -->
+  <div class="floating-container" id="floatingBg"></div>
+
+  <!-- Outer Ring Container for Photos -->
+  <div class="outer-photo-ring" id="outerPhotoRing"></div>
+
+  <!-- Invisible Bounding Box covering card & collage ring area -->
+  <div class="no-boundary-box" id="noBoundary"></div>
+
+  <!-- Main Center Card Container -->
+  <div class="container" id="mainContainer">
+    
+    <!-- Slideshow Section -->
+    <div id="slideshow" class="section active">
+      <div id="slide-content">
+        <div class="slide-icon" id="slide-icon">🍎</div>
+        <h2 id="slide-title">Happy Teacher's Day!</h2>
+        <p id="slide-text">We prepared a small appreciation presentation just for you...</p>
+      </div>
+      <button class="btn" id="nextSlideBtn" onclick="nextSlide()">Next ➔</button>
+    </div>
+
+    <!-- Interactive Question Section -->
+    <div id="question-section" class="section">
+      <h2>🎉 Happy Teacher's Day! 🎉</h2>
+      <p>Did you enjoy your special presentation and gift?</p>
+      
+      <div class="interactive-area" id="interactiveArea">
+        <button class="btn btn-yes" id="yesBtn" onclick="handleYes()">YES! ❤️</button>
+        <!-- Starts neatly inside the card next to Yes! -->
+        <button class="btn btn-no" id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()">No 😜</button>
+      </div>
+    </div>
+
+    <!-- Final Surprise Section -->
+    <div id="surprise-section" class="section">
+      <div class="slide-icon">🎁✨</div>
+      <h2>We Knew You'd Say YES!</h2>
+      <p>Thank you for all your hard work, patience, and dedication! We have one final exclusive surprise waiting for you...</p>
+      
+      <button onclick="openRandomSurprise()" class="rickroll-btn">
+        🎬 Click Here for Your Final Gift! 🎁
+      </button>
+
+      <!-- Subtext Hint -->
+      <div class="surprise-hint">*(Note: Surprises may vary depending on luck!)*</div>
+    </div>
+
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div class="modal-overlay" id="imageModal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      <img src="" alt="Expanded View" class="modal-img" id="modalImg" />
+    </div>
+  </div>
+
+  <script>
+    const surpriseLinks = [
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://drive.google.com/file/d/1FIqX25kD0R0B5VG1K-725zUrE5hs3uMD/view?usp=sharing",
+      "https://drive.google.com/file/d/1gN_bLTHb4niBBBb9rsHnnbgjYTTe29WM/view?usp=sharing"
+    ];
+
+    function openRandomSurprise() {
+      const randomIndex = Math.floor(Math.random() * surpriseLinks.length);
+      const chosenUrl = surpriseLinks[randomIndex];
+      window.open(chosenUrl, '_blank');
+    }
+
+    const slideRingImages = [
+      // Slide 1 Photos
+      [
+        "20260711_083639.jpg",
+        "20260711_084956.jpg",
+        "20260711_084958.jpg",
+        "20260711_105043.jpg",
+        "20260711_105133.jpg",
+        "747752835_1928505014404883_4867300663059431409_n.jpg",
+        "747535817_1346396976988395_5869309915314375765_n.jpg",
+        "745476796_881706851662161_8137798046080016002_n.jpg",
+        "746398866_4550201851917678_3877341386041774692_n.jpg"
+      ],
+      // Slide 2 Photos
+      [
+        "20260812_110118.jpg",
+        "20261003_112933.jpg",
+        "765068924_1856161032028133_1261997941178015581_n.jpg",
+        "753356393_1076022365000373_1227749983217068788_n.jpg",
+        "20260812_151722.jpg",
+        "20260812_160512.jpg",
+        "752497316_2696774640718266_1306910790471507421_n.jpg",
+        "20261003_112512.jpg",
+        "20260812_160537.jpg"
+      ],
+      // Slide 3 Photos
+      [
+        "20261003_091009.jpg",
+        "20261003_100708.jpg",
+        "20261003_100716.jpg",
+        "20261003_110405.jpg",
+        "20261003_110410.jpg",
+        "20261003_110419.jpg",
+        "20261003_112500.jpg",
+        "20260812_151655.jpg",
+        "744213479_2328044897934314_4793901968391176667_n.jpg"
+      ],
+      // Slide 4 Photos ("From Your IT Students" Outer Ring Photos)
+      [
+        "3.png",
+        "6.png",
+        "7.png",
+        "9 (2).png",
+        "9.png",
+        "10.png",
+        "11.png",
+        "12.png",
+        "747752835_1928505014404883_4867300663059431409_n.jpg"
+      ]
+    ];
+
+    // Background Emojis Generator
+    const icons = ['❤️', '💻', '📚', '☕', '⭐', '🎓', '✨'];
+    const bgContainer = document.getElementById('floatingBg');
+
+    function createFloatingItems() {
+      for (let i = 0; i < 20; i++) {
+        const item = document.createElement('div');
+        item.classList.add('float-item');
+        item.innerText = icons[Math.floor(Math.random() * icons.length)];
+        item.style.left = `${Math.random() * 100}%`;
+        item.style.animationDuration = `${5 + Math.random() * 5}s`;
+        item.style.animationDelay = `${Math.random() * 5}s`;
+        bgContainer.appendChild(item);
+      }
+    }
+    createFloatingItems();
+
+    // Render Outer Photos
+    function renderOuterPhotos(slideIndex) {
+      const ring = document.getElementById('outerPhotoRing');
+      ring.innerHTML = ''; 
+
+      const photos = slideRingImages[slideIndex];
+      if (!photos) return;
+
+      photos.forEach((url, index) => {
+        if (index > 8) return; 
+        const img = document.createElement('img');
+        img.src = url;
+        img.classList.add('outer-img', `slot-${index}`);
+        img.style.animationDelay = `${index * 0.05}s`;
+        img.onclick = () => openModal(url);
+        ring.appendChild(img);
+      });
+    }
+
+    // Modal Expand / Close Functions
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+
+    function openModal(imageSrc) {
+      modalImg.src = imageSrc;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Slideshow Data
+    const slides = [
+      { icon: '🍎', title: "Happy Teacher's Day!", text: "We prepared a small appreciation presentation just for you..." },
+      { icon: '☕', title: "To Our Best Mentors", text: "Thank you for powering through endless lectures, code debugging, and grading papers!" },
+      { icon: '💻', title: "Building the Future", text: "You don't just teach lessons, you help build our future brick by brick (and line by line)." },
+      { icon: '💙', title: "From Your IT Students", text: "We appreciate everything you do for us every single day!" }
+    ];
+
+    let currentSlide = 0;
+    renderOuterPhotos(0);
+
+    function nextSlide() {
+      currentSlide++;
+      if (currentSlide < slides.length) {
+        document.getElementById('slide-icon').innerText = slides[currentSlide].icon;
+        document.getElementById('slide-title').innerText = slides[currentSlide].title;
+        document.getElementById('slide-text').innerText = slides[currentSlide].text;
+        
+        renderOuterPhotos(currentSlide);
+
+        if (currentSlide === slides.length - 1) {
+          document.getElementById('nextSlideBtn').innerText = "Continue ➔";
+        }
+      } else {
+        document.getElementById('slideshow').classList.remove('active');
+        document.getElementById('question-section').classList.add('active');
+      }
+    }
+
+    // Runaway "No" Button Dodge Logic
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBoundary = document.getElementById('noBoundary');
+
+    let isDetached = false;
+
+    function dodgeButton() {
+      // First hover: Move the button into the outer invisible boundary box layer
+      if (!isDetached) {
+        noBoundary.appendChild(noBtn);
+        noBtn.style.position = 'absolute';
+        isDetached = true;
+      }
+
+      const boundWidth = noBoundary.clientWidth;
+      const boundHeight = noBoundary.clientHeight;
+
+      const btnWidth = noBtn.offsetWidth || 80;
+      const btnHeight = noBtn.offsetHeight || 40;
+
+      const maxX = boundWidth - btnWidth;
+      const maxY = boundHeight - btnHeight;
+
+      const yesRect = yesBtn.getBoundingClientRect();
+      const boundRect = noBoundary.getBoundingClientRect();
+
+      // Get Yes button coordinates relative to the boundary box
+      const yesLeft = yesRect.left - boundRect.left;
+      const yesRight = yesLeft + yesRect.width;
+      const yesTop = yesRect.top - boundRect.top;
+      const yesBottom = yesTop + yesRect.height;
+
+      let newX, newY, overlaps;
+      let attempts = 0;
+
+      do {
+        newX = Math.floor(Math.random() * maxX);
+        newY = Math.floor(Math.random() * maxY);
+
+        const buffer = 30; // Distance buffer around YES button
+        overlaps = !(
+          (newX + btnWidth + buffer < yesLeft) ||
+          (newX - buffer > yesRight) ||
+          (newY + btnHeight + buffer < yesTop) ||
+          (newY - buffer > yesBottom)
+        );
+
+        attempts++;
+      } while (overlaps && attempts < 50);
+
+      noBtn.style.transform = 'none';
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+    }
+
+    // Handles clicking YES
+    function handleYes() {
+      noBtn.style.display = 'none';
+      document.getElementById('question-section').classList.remove('active');
+      document.getElementById('surprise-section').classList.add('active');
+    }
+  </script>
+</body>
+</html>
